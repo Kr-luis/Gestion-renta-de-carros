@@ -9,7 +9,7 @@ const Crearvehiculo = async (req,res) => {
     if (Object.values(req.body).includes("")) return res.status(400).json({msg:"Debe llenar todos los campos"})
 
     const verificarPlaca = await Vehiculo.findOne({placa:placamin})
-    if(verificarPlaca) return res.status(400).json({msg:"Ya existe una vehiculo con ese nombre"})
+    if(verificarPlaca) return res.status(400).json({msg:"Ya existe una vehiculo con esa placa"})
     
     const permitido = /^[A-Z0-9]+$/; // Permite letras, espacios y acentos
     if(!permitido.test(placa)) return res.status(400).json({msg:"No se permiten el uso de caracteres especiales, intente de nuevo"})
