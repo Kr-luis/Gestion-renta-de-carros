@@ -3,23 +3,23 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { FiArrowLeft } from 'react-icons/fi';
 import Swal from 'sweetalert2'; // Importar SweetAlert2
-import '../styles/Matriculas.css';
+import '../styles/Reservas.css'; // Cambiar el nombre del archivo CSS
 
 const ListaReservas = () => {
-    const [matriculas, setMatriculas] = useState([]);
+    const [reservas, setReservas] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
-        const fetchMatriculas = async () => {
+        const fetchReservas = async () => {
             try {
-                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/caso1/matriculas/ver`);
-                setMatriculas(response.data);
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/caso2/reservas/ver`);
+                setReservas(response.data);
             } catch (error) {
                 console.error('Error al obtener las reservas', error);
             }
         };
 
-        fetchMatriculas();
+        fetchReservas();
     }, []);
 
     const handleBack = () => {
@@ -40,13 +40,13 @@ const ListaReservas = () => {
             });
 
             if (result.isConfirmed) {
-                await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/caso1/matriculas/eliminar/${id}`);
+                await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/caso2/reservas/eliminar/${id}`);
                 Swal.fire(
                     'Eliminado',
                     'La reserva ha sido eliminada.',
                     'success'
                 );
-                setMatriculas(matriculas.filter(matricula => matricula._id !== id));
+                setReservas(reservas.filter(reserva => reserva._id !== id));
             }
         } catch (error) {
             Swal.fire({
@@ -58,7 +58,7 @@ const ListaReservas = () => {
     };
 
     return (
-        <div className="contenedor-matriculas">
+        <div className="contenedor-reservas"> {/* Cambiar clase CSS */}
             <button className="btn-regresar" onClick={handleBack}>
                 <FiArrowLeft className="icono-flecha" />
                 Regresar
@@ -69,24 +69,28 @@ const ListaReservas = () => {
                     <tr>
                         <th>Código</th>
                         <th>Descripción</th>
-                        <th>Estudiante</th>
-                        <th>Materias</th>
+                        <th>Cliente</th> {/* Cambiar "Estudiante" a "Cliente" */}
+                        <th>Vehículos</th> {/* Cambiar "Materias" a "Vehículos" */}
                         <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {matriculas.map(matricula => (
-                        <tr key={matricula._id}>
-                            <td>{matricula.codigo}</td>
-                            <td>{matricula.descripcion}</td>
-                            <td>{matricula.id_estudiante}</td>
-                            <td>{matricula.id_materias.join(', ')}</td>
+                    {reservas.map(reserva => (
+                        <tr key={reserva._id}>
+                            <td>{reserva.codigo}</td>
+                            <td>{reserva.descripcion}</td>
+                            <td>{reserva.id_cliente}</td> {/* Cambiar "id_estudiante" a "id_cliente" */}
                             <td>
-                                <Link to={`/reserva/editar/${matricula._id}`} className="boton-editar">Editar</Link>
-                                <Link to={`/reserva/detalle/${matricula._id}`} className="boton-detalle">Detalle</Link>
+                                {Array.isArray(reserva.id_vehiculos)
+                                    ? reserva.id_vehiculos.join(', ')
+                                    : 'No disponible'}
+                            </td> {/* Cambiar "id_materias" a "id_vehiculos" */}
+                            <td>
+                                <Link to={`/reserva/editar/${reserva._id}`} className="boton-editar">Editar</Link>
+                                <Link to={`/reserva/detalle/${reserva._id}`} className="boton-detalle">Detalle</Link>
                                 <button
                                     className="boton-eliminar"
-                                    onClick={() => handleEliminar(matricula._id)}
+                                    onClick={() => handleEliminar(reserva._id)}
                                 >
                                     Eliminar
                                 </button>

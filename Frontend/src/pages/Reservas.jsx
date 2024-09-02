@@ -2,41 +2,54 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
-import '../styles/Matriculas.css';
+import '../styles/Reservas.css';
+
+// Función para generar un código aleatorio de 10 caracteres en mayúsculas
+const generarCodigoAleatorio = () => {
+    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let codigo = '';
+    for (let i = 0; i < 10; i++) {
+        const randomIndex = Math.floor(Math.random() * caracteres.length);
+        codigo += caracteres[randomIndex];
+    }
+    return codigo;
+};
 
 const Reservas = () => {
     const [codigo, setCodigo] = useState('');
     const [descripcion, setDescripcion] = useState('');
     const [cedula, setCedula] = useState('');
-    const [nombreEstudiante, setNombreEstudiante] = useState('');
-    const [idEstudiante, setIdEstudiante] = useState('');
-    const [idMaterias, setIdMaterias] = useState([]);
-    const [materiasDisponibles, setMateriasDisponibles] = useState([]);
-    const [estudiantes, setEstudiantes] = useState([]);
+    const [nombreCliente, setNombreCliente] = useState('');
+    const [idCliente, setIdCliente] = useState('');
+    const [idVehiculos, setIdVehiculos] = useState([]);
+    const [vehiculosDisponibles, setVehiculosDisponibles] = useState([]);
+    const [clientes, setClientes] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
-        obtenerMateriasDisponibles();
-        obtenerEstudiantes();
+        obtenerVehiculosDisponibles();
+        obtenerClientes();
+        // Generar un código aleatorio al montar el componente
+        setCodigo(generarCodigoAleatorio());
     }, []);
 
-    const obtenerMateriasDisponibles = async () => {
+    const obtenerVehiculosDisponibles = async () => {
         try {
-            const { data } = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/caso1/materias/ver`);
-            setMateriasDisponibles(data);
+            const { data } = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/caso2/vehiculo/ver`);
+            setVehiculosDisponibles(data);
         } catch (error) {
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: 'Error al obtener los vehiculos disponibles.',
+                text: 'Error al obtener los vehículos disponibles.',
             });
         }
     };
 
-    const obtenerEstudiantes = async () => {
+    const obtenerClientes = async () => {
         try {
-            const { data } = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/caso1/estudiante/ver`);
-            setEstudiantes(data);
+            const { data } = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/caso2/cliente/ver`);
+            setClientes(data);
         } catch (error) {
             Swal.fire({
                 icon: 'error',
@@ -46,32 +59,38 @@ const Reservas = () => {
         }
     };
 
-    const seleccionarEstudiante = (estudiante) => {
-        setNombreEstudiante(`${estudiante.nombre} ${estudiante.apellido}`);
-        setIdEstudiante(estudiante._id);
-        setCedula(estudiante.cedula);
+    const seleccionarCliente = (cliente) => {
+        setNombreCliente(`${cliente.nombre} ${cliente.apellido}`);
+        setIdCliente(cliente._id);
+        setCedula(cliente.cedula);
     };
 
-    const crearMatricula = async (e) => {
+    const crearReserva = async (e) => {
         e.preventDefault();
 
-        if (!codigo || !descripcion || !idEstudiante || idMaterias.length === 0) {
+        if (!codigo || !descripcion || !idCliente || idVehiculos.length === 0) {
             Swal.fire({
                 icon: 'warning',
                 title: 'Advertencia',
-                text: 'Por favor, completa todos los campos y selecciona al menos un Vehiculo.',
+                text: 'Por favor, completa todos los campos y selecciona al menos un vehículo.',
             });
             return;
         }
 
         try {
-            const nuevaMatricula = {
+            const nuevaReserva = {
                 codigo,
                 descripcion,
-                id_estudiante: idEstudiante,
-                id_materias: idMaterias
+                id_cliente: idCliente,  // Actualiza el nombre del campo
+                id_vehiculo: idVehiculos // Actualiza el nombre del campo
             };
-            await axios.post(`${import.meta.env.VITE_BACKEND_URL}/caso1/matriculas/crear`, nuevaMatricula);
+
+            console.log("Datos de la reserva a enviar:", nuevaReserva); // Agrega este log
+
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/caso2/reservas/crear`, nuevaReserva);
+
+            console.log("Respuesta del servidor:", response); // Agrega este log
+
             Swal.fire({
                 icon: 'success',
                 title: 'Éxito',
@@ -79,6 +98,8 @@ const Reservas = () => {
             });
             limpiarFormulario();
         } catch (error) {
+            console.error("Error al crear reserva:", error); // Agrega este log
+
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
@@ -88,37 +109,36 @@ const Reservas = () => {
     };
 
     const limpiarFormulario = () => {
-        setCodigo('');
         setDescripcion('');
         setCedula('');
-        setNombreEstudiante('');
-        setIdEstudiante('');
-        setIdMaterias([]);
+        setNombreCliente('');
+        setIdCliente('');
+        setIdVehiculos([]);
     };
 
-    const handleMateriaSeleccionada = (id) => {
-        if (idMaterias.includes(id)) {
-            setIdMaterias(idMaterias.filter(materiaId => materiaId !== id));
+    const handleVehiculoSeleccionado = (id) => {
+        if (idVehiculos.includes(id)) {
+            setIdVehiculos(idVehiculos.filter(vehiculoId => vehiculoId !== id));
         } else {
-            setIdMaterias([...idMaterias, id]);
+            setIdVehiculos([...idVehiculos, id]);
         }
     };
 
-    const handleVerMatriculas = () => {
+    const handleVerReservas = () => {
         navigate('/reservas');
     };
 
     return (
-        <div className="contenedor-matriculas">
+        <div className="contenedor-reservas">
             <h2 className="titulo">Registrar Reserva</h2>
-            <form onSubmit={crearMatricula} className="formulario">
+            <form onSubmit={crearReserva} className="formulario">
                 <div className="campo-group">
                     <label className="label">Código</label>
                     <input
                         type="text"
                         className="input"
                         value={codigo}
-                        onChange={(e) => setCodigo(e.target.value)}
+                        readOnly // Campo solo lectura
                     />
                 </div>
                 <div className="campo-group">
@@ -135,7 +155,7 @@ const Reservas = () => {
                     <input
                         type="text"
                         className="input"
-                        value={nombreEstudiante}
+                        value={nombreCliente}
                         readOnly
                     />
                 </div>
@@ -150,59 +170,59 @@ const Reservas = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {estudiantes.map((estudiante) => (
+                            {clientes.map((cliente) => (
                                 <tr
-                                    key={estudiante._id}
-                                    onClick={() => seleccionarEstudiante(estudiante)}
-                                    className={idEstudiante === estudiante._id ? 'fila-seleccionada' : ''}
+                                    key={cliente._id}
+                                    onClick={() => seleccionarCliente(cliente)}
+                                    className={idCliente === cliente._id ? 'fila-seleccionada' : ''}
                                 >
-                                    <td className="tabla-celda">{estudiante.nombre}</td>
-                                    <td className="tabla-celda">{estudiante.apellido}</td>
-                                    <td className="tabla-celda">{estudiante.cedula}</td>
+                                    <td className="tabla-celda">{cliente.nombre}</td>
+                                    <td className="tabla-celda">{cliente.apellido}</td>
+                                    <td className="tabla-celda">{cliente.cedula}</td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
                 </div>
                 <div className="campo-group">
-                    <label className="label">Vehiculos Disponibles</label>
+                    <label className="label">Vehículos Disponibles</label>
                     <table className="tabla">
                         <thead>
                             <tr>
                                 <th className="tabla-encabezado">Seleccionar</th>
-                                <th className="tabla-encabezado">Nombre</th>
-                                <th className="tabla-encabezado">Código</th>
+                                <th className="tabla-encabezado">Marca</th>
+                                <th className="tabla-encabezado">Placa</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {materiasDisponibles.map((materia) => (
-                                <tr key={materia._id}>
+                            {vehiculosDisponibles.map((vehiculo) => (
+                                <tr key={vehiculo._id}>
                                     <td>
                                         <input
                                             type="checkbox"
-                                            checked={idMaterias.includes(materia._id)}
-                                            onChange={() => handleMateriaSeleccionada(materia._id)}
+                                            checked={idVehiculos.includes(vehiculo._id)}
+                                            onChange={() => handleVehiculoSeleccionado(vehiculo._id)}
                                         />
                                     </td>
-                                    <td className="tabla-celda">{materia.nombre}</td>
-                                    <td className="tabla-celda">{materia.codigo}</td>
+                                    <td className="tabla-celda">{vehiculo.marca}</td>
+                                    <td className="tabla-celda">{vehiculo.placa}</td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
                 </div>
                 <div className="campo-group">
-                    <label className="label">Vehiculos Seleccionadas</label>
+                    <label className="label">Vehículos Seleccionados</label>
                     <input
                         type="text"
                         className="input"
-                        value={idMaterias.join(', ')}
+                        value={idVehiculos.join(', ')}
                         readOnly
                     />
                 </div>
                 <div className="botones">
                     <button type="submit" className="boton">Registrar Reserva</button>
-                    <button type="button" onClick={handleVerMatriculas} className="boton-secundario">Reservas Registradas</button>
+                    <button type="button" onClick={handleVerReservas} className="boton-secundario">Reservas Registradas</button>
                 </div>
             </form>
         </div>

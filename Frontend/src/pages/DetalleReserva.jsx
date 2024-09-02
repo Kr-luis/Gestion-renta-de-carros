@@ -2,40 +2,44 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom'; // Importar useNavigate
 import { FiArrowLeft } from 'react-icons/fi';
-import '../styles/Matriculas.css';
+import '../styles/Reservas.css'; // Asegúrate de que el archivo CSS esté correctamente nombrado
 
 const DetalleReserva = () => {
-    const [matricula, setMatricula] = useState(null);
+    const [reserva, setReserva] = useState(null);
     const { id } = useParams();
     const navigate = useNavigate(); // Definir useNavigate para manejar la navegación
 
     useEffect(() => {
-        const fetchMatricula = async () => {
+        const fetchReserva = async () => {
             try {
-                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/caso1/matriculas/ver/${id}`);
-                setMatricula(response.data);
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/caso2/reservas/ver/${id}`);
+                setReserva(response.data);
             } catch (error) {
                 console.error('Error al obtener la reserva', error);
             }
         };
 
-        fetchMatricula();
+        fetchReserva();
     }, [id]);
 
-    if (!matricula) return <p>Cargando...</p>;
+    if (!reserva) return <p>Cargando...</p>;
 
     return (
-        <div className="contenedor-matriculas">
+        <div className="contenedor-reservas">
             <button className="btn-regresar" onClick={() => navigate(-1)}>
                 <FiArrowLeft className="icono-flecha" />
                 Regresar
             </button>
             <h2 className="titulo">Detalles de la Reserva</h2>
             <div className="detalle">
-                <p><strong>Código:</strong> {matricula.codigo}</p>
-                <p><strong>Descripción:</strong> {matricula.descripcion}</p>
-                <p><strong>Estudiante:</strong> {matricula.id_estudiante}</p>
-                <p><strong>Materias:</strong> {matricula.id_materias.join(', ')}</p>
+                <p><strong>Código:</strong> {reserva.codigo}</p>
+                <p><strong>Descripción:</strong> {reserva.descripcion}</p>
+                <p><strong>Cliente:</strong> {reserva.cliente ? reserva.cliente.nombre : 'No disponible'}</p>
+                <p><strong>Vehículos:</strong> 
+                    {Array.isArray(reserva.vehiculos) && reserva.vehiculos.length > 0
+                        ? reserva.vehiculos.join(', ')
+                        : 'No disponible'}
+                </p>
             </div>
         </div>
     );
