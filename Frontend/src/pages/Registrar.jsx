@@ -78,7 +78,7 @@ export const Registrar = () => {
         }
 
         try {
-            const url = `${import.meta.env.VITE_BACKEND_URL}/caso1/usuario/registro`;
+            const url = `${import.meta.env.VITE_BACKEND_URL}/caso2/usuario/registro`;
             const respuesta = await axios.post(url, {
                 nombre: form.nombre,
                 apellido: form.apellido,

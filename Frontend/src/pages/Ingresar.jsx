@@ -29,7 +29,7 @@ const Ingresar = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const url = `${import.meta.env.VITE_BACKEND_URL}/caso1/usuario/login`;
+            const url = `${import.meta.env.VITE_BACKEND_URL}/caso2/usuario/login`;
             const { data } = await axios.post(url, form);
             localStorage.setItem('id_usuario', data._id);
             localStorage.setItem('email', data.email);
