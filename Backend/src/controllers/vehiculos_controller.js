@@ -22,7 +22,16 @@ const Crearvehiculo = async (req,res) => {
     if(!Nombre_permitidos.test(color)) return res.status(400).json({msg:"Lo sentimos, el color que intenta ingresar es incorrecta"})
     // BDD
 
-    const nuevavehiculo = new Vehiculo({placa: placamin}, req.body)
+    const nuevavehiculo = new Vehiculo({
+        marca,
+        modelo,
+        anio_fabricacion,
+        placa: placamin,
+        color,
+        tipo_vehiculo,
+        kilometraje,
+        descripcion
+    });
     await nuevavehiculo.save()
 
     res.status(200).json({msg:"La vehiculo fue creada con exito"})
@@ -30,8 +39,8 @@ const Crearvehiculo = async (req,res) => {
 
 const VerVehiculo = async (req, res) => {
     try {
-        const Vehiculo = await Vehiculo.find().select("-createdAt -updatedAt -__v");
-        res.json(Vehiculo);
+        const vehiculos = await Vehiculo.find().select("-createdAt -updatedAt -__v");
+        res.json(vehiculos);
     } catch (error) {
         res.status(500).json({ message: "Error al obtener las Vehiculo", error });
     }

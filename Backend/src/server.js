@@ -2,10 +2,10 @@ import express from "express"
 import doteenv from "dotenv"
 import cors from "cors"
 
-import routerusuario from "./routers/usuarios_routers.js"
-import routermatricula from "./routers/matriculas_routers.js"
-import routermateria from "./routers/materias_routers.js"
-import routerestudiante from "./routers/estudiantes_routers.js"
+import routerUsuario from "./routers/usuarios_routers.js"
+import routerCliente from "./routers/clientes_routers.js"
+import routerVehiculo from "./routers/vehiculo_routers.js"
+import routerReserva from "./routers/reservas_routers.js"
 
 // Inicializar
 const app = express()
@@ -26,10 +26,10 @@ app.get("/", (req, res) => {
     res.send("Servidor levantado")
 })
 
-app.use("/caso1", routerusuario)
-app.use("/caso1", routermateria)
-app.use("/caso1", routerestudiante)
-app.use("/caso1", routermatricula)
+app.use("/caso2", routerUsuario)
+app.use("/caso2", routerVehiculo)
+app.use("/caso2", routerReserva)
+app.use("/caso2", routerCliente)
 
 // exportar 
 

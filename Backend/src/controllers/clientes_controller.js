@@ -33,8 +33,8 @@ const CrearCliente = async (req,res) => {
 
 const VerCliente = async (req,res) => {
     try{
-        const Clientes = await Clientes.find().select("-createdAt -updatedAt -__v");
-        res.json(Clientes)
+        const clientes = await Clientes.find().select("-createdAt -updatedAt -__v");
+        res.json(clientes)
     } catch (error) {
         res.status(500).json({msg:"Hubo un error al mostrar los Clientes", error})
     }

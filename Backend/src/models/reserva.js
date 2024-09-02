@@ -11,14 +11,14 @@ const ReservasSchema = new Schema({
         require:true,
         maxlength:50
     },
-    id_cliente:{
-        type:mongoose.Schema.Types.ObjectId,
+    cliente:{
+        type:Object,
         ref:"Cliente"
     },
-    id_vehiculo:[{
-        type:mongoose.Schema.Types.ObjectId,
+    vehiculos:{
+        type:[Object],
         ref:"Vehiculo"
-    }]
+    }
 },{
     timestamps:true
 })
