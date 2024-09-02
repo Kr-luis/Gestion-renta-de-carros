@@ -5,10 +5,10 @@ import {Router} from "express"
 
 const route = Router()
 
-route.post("/matriculas/crear", Crearreserva)
-route.get("/matriculas/ver", Verreserva)
-route.get("/matriculas/ver/:id", detallereserva)
-route.put("/matriculas/actualizar/:id", Actualizarreserva)
-route.delete("/matriculas/eliminar/:id", Eliminarreserva)
+route.post("/reservas/crear", Crearreserva)
+route.get("/reservas/ver", Verreserva)
+route.get("/reservas/ver/:id", detallereserva)
+route.put("/reservas/actualizar/:id", Actualizarreserva)
+route.delete("/reservas/eliminar/:id", Eliminarreserva)
 
 export default route

@@ -10,10 +10,10 @@ import {Router} from "express"
 
 const route = Router()
 
-route.post("/estudiante/crear", CrearCliente)
-route.get("/estudiante/ver", VerCliente)
-route.get("/estudiante/ver/:id", detalleCliente)
-route.put("/estudiante/actualizar/:id", ActualizarCliente)
-route.delete("/estudiante/eliminar/:id", EliminarCliente)
+route.post("/cliente/crear", CrearCliente)
+route.get("/cliente/ver", VerCliente)
+route.get("/cliente/ver/:id", detalleCliente)
+route.put("/cliente/actualizar/:id", ActualizarCliente)
+route.delete("/cliente/eliminar/:id", EliminarCliente)
 
 export default route

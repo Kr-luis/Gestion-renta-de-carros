@@ -9,10 +9,10 @@ import { Router } from "express"
 
 const router = Router()
 
-router.post("/materias/crear", Crearvehiculo)
-router.get("/materias/ver", VerVehiculo)
-router.get("/materias/ver/:id", detallevehiculo)
-router.put("/materias/actualizar/:id", Actualizarvehiculo)
-router.delete("/materias/eliminar/:id", Eliminarvehiculo)
+router.post("/vehiculo/crear", Crearvehiculo)
+router.get("/vehiculo/ver", VerVehiculo)
+router.get("/vehiculo/ver/:id", detallevehiculo)
+router.put("/vehiculo/actualizar/:id", Actualizarvehiculo)
+router.delete("/vehiculo/eliminar/:id", Eliminarvehiculo)
 
 export default router
