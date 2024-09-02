@@ -2,51 +2,51 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import { FiArrowLeft } from 'react-icons/fi';
-import '../styles/Estudiantes.css';
+import '../styles/Vehiculos.css';
 
-const DetailEstudiante = () => {
-    const [estudiante, setEstudiante] = useState(null);
+const DetailVehiculo = () => {
+    const [vehiculo, setVehiculo] = useState(null);
     const { id } = useParams();
     const navigate = useNavigate(); // Hook para navegación
 
     useEffect(() => {
-        const fetchEstudiante = async () => {
+        const fetchVehiculo = async () => {
             try {
-                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/caso1/estudiante/ver/${id}`);
-                setEstudiante(response.data);
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/caso2/vehiculo/ver/${id}`);
+                setVehiculo(response.data);
             } catch (error) {
                 console.error('Error al obtener el vehículo', error);
             }
         };
 
-        fetchEstudiante();
+        fetchVehiculo();
     }, [id]);
 
     const handleBack = () => {
         navigate(-1); // Regresa a la página anterior
     };
 
-    if (!estudiante) return <p>Cargando...</p>;
+    if (!vehiculo) return <p>Cargando...</p>;
 
     return (
-        <div className="contenedor-estudiantes">
+        <div className="contenedor-vehiculo">
             <button className="btn-regresar" onClick={handleBack}>
                 <FiArrowLeft className="icono-flecha" />
                 Regresar
             </button>
-            <h2 className="titulo">Detalles del Vehiculo</h2>
+            <h2 className="titulo">Detalles del Vehículo</h2>
             <div className="detalle">
-                <p><strong>Nombre:</strong> {estudiante.nombre}</p>
-                <p><strong>Apellido:</strong> {estudiante.apellido}</p>
-                <p><strong>Cédula:</strong> {estudiante.cedula}</p>
-                <p><strong>Fecha de Nacimiento:</strong> {new Date(estudiante.fecha_nacimiento).toLocaleDateString()}</p>
-                <p><strong>Ciudad:</strong> {estudiante.ciudad}</p>
-                <p><strong>Dirección:</strong> {estudiante.direccion}</p>
-                <p><strong>Teléfono:</strong> {estudiante.telefono}</p>
-                <p><strong>Email:</strong> {estudiante.email}</p>
+                <p><strong>Marca:</strong> {vehiculo.marca}</p>
+                <p><strong>Modelo:</strong> {vehiculo.modelo}</p>
+                <p><strong>Año de Fabricación:</strong> {vehiculo.anio_fabricacion}</p>
+                <p><strong>Placa:</strong> {vehiculo.placa}</p>
+                <p><strong>Color:</strong> {vehiculo.color}</p>
+                <p><strong>Tipo de Vehículo:</strong> {vehiculo.tipo_vehiculo}</p>
+                <p><strong>Kilometraje:</strong> {vehiculo.kilometraje}</p>
+                <p><strong>Descripción:</strong> {vehiculo.descripcion}</p>
             </div>
         </div>
     );
 };
 
-export default DetailEstudiante;
+export default DetailVehiculo;

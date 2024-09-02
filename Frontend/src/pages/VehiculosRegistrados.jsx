@@ -3,23 +3,23 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { FiArrowLeft } from 'react-icons/fi';
 import Swal from 'sweetalert2'; // Importar SweetAlert2
-import '../styles/Estudiantes.css';
+import '../styles/Vehiculos.css';
 
 const ListVehiculos = () => {
-    const [estudiantes, setEstudiantes] = useState([]);
+    const [vehiculos, setVehiculos] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
-        const fetchEstudiantes = async () => {
+        const fetchVehiculos = async () => {
             try {
-                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/caso1/estudiante/ver`);
-                setEstudiantes(response.data);
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/caso2/vehiculo/ver`);
+                setVehiculos(response.data);
             } catch (error) {
                 console.error('Error al obtener los vehículos', error);
             }
         };
 
-        fetchEstudiantes();
+        fetchVehiculos();
     }, []);
 
     const handleBack = () => {
@@ -40,14 +40,14 @@ const ListVehiculos = () => {
 
         if (result.isConfirmed) {
             try {
-                await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/caso1/estudiante/eliminar/${id}`);
+                await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/caso2/vehiculo/eliminar/${id}`);
                 Swal.fire(
                     'Eliminado!',
                     'El vehículo ha sido eliminado.',
                     'success'
                 );
-                // Actualizar la lista de estudiantes después de eliminar
-                setEstudiantes(estudiantes.filter(estudiante => estudiante._id !== id));
+                // Actualizar la lista de vehículos después de eliminar
+                setVehiculos(vehiculos.filter(vehiculo => vehiculo._id !== id));
             } catch (error) {
                 Swal.fire(
                     'Error!',
@@ -59,34 +59,36 @@ const ListVehiculos = () => {
     };
 
     return (
-        <div className="contenedor-estudiantes">
+        <div className="contenedor-vehiculos">
             <button className="btn-regresar" onClick={handleBack}>
                 <FiArrowLeft className="icono-flecha" />
                 Regresar
             </button>
-            <h2 className="titulo">Vehiculos Registrados</h2>
+            <h2 className="titulo">Vehículos Registrados</h2>
             <table className="tabla">
                 <thead>
                     <tr>
-                        <th>Nombre</th>
-                        <th>Apellido</th>
-                        <th>Cédula</th>
-                        <th>Email</th>
+                        <th>Marca</th>
+                        <th>Modelo</th>
+                        <th>Año de Fabricación</th>
+                        <th>Placa</th>
+                        <th>Color</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {estudiantes.map(estudiante => (
-                        <tr key={estudiante._id}>
-                            <td>{estudiante.nombre}</td>
-                            <td>{estudiante.apellido}</td>
-                            <td>{estudiante.cedula}</td>
-                            <td>{estudiante.email}</td>
+                    {vehiculos.map(vehiculo => (
+                        <tr key={vehiculo._id}>
+                            <td>{vehiculo.marca}</td>
+                            <td>{vehiculo.modelo}</td>
+                            <td>{vehiculo.anio_fabricacion}</td>
+                            <td>{vehiculo.placa}</td>
+                            <td>{vehiculo.color}</td>
                             <td>
-                                <Link to={`/vehiculo/editar/${estudiante._id}`} className="boton-editar">Editar</Link>
-                                <Link to={`vehiculo/detalle/${estudiante._id}`} className="boton-detalle">Ver Detalle</Link>
+                                <Link to={`/vehiculo/editar/${vehiculo._id}`} className="boton-editar">Editar</Link>
+                                <Link to={`/vehiculo/detalle/${vehiculo._id}`} className="boton-detalle">Detalle</Link>
                                 <button
-                                    onClick={() => handleDelete(estudiante._id)}
+                                    onClick={() => handleDelete(vehiculo._id)}
                                     className="boton-eliminar"
                                 >
                                     Eliminar

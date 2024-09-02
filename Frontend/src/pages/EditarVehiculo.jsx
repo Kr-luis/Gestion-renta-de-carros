@@ -3,46 +3,46 @@ import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FiArrowLeft } from 'react-icons/fi';
 import Swal from 'sweetalert2';
-import '../styles/Estudiantes.css';
+import '../styles/Vehiculos.css';
 
 const EditarVehiculo = () => {
-    const [nombre, setNombre] = useState('');
-    const [apellido, setApellido] = useState('');
-    const [cedula, setCedula] = useState('');
-    const [fechaNacimiento, setFechaNacimiento] = useState('');
-    const [ciudad, setCiudad] = useState('');
-    const [direccion, setDireccion] = useState('');
-    const [telefono, setTelefono] = useState('');
-    const [email, setEmail] = useState('');
+    const [marca, setMarca] = useState('');
+    const [modelo, setModelo] = useState('');
+    const [anioFabricacion, setAnioFabricacion] = useState('');
+    const [placa, setPlaca] = useState('');
+    const [color, setColor] = useState('');
+    const [tipoVehiculo, setTipoVehiculo] = useState('');
+    const [kilometraje, setKilometraje] = useState('');
+    const [descripcion, setDescripcion] = useState('');
     const { id } = useParams();
     const navigate = useNavigate();
 
     useEffect(() => {
-        const fetchEstudiante = async () => {
+        const fetchVehiculo = async () => {
             try {
-                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/caso1/estudiante/ver/${id}`);
-                const estudiante = response.data;
-                setNombre(estudiante.nombre);
-                setApellido(estudiante.apellido);
-                setCedula(estudiante.cedula);
-                setFechaNacimiento(estudiante.fecha_nacimiento.slice(0, 10)); // Ajustar formato de fecha
-                setCiudad(estudiante.ciudad);
-                setDireccion(estudiante.direccion);
-                setTelefono(estudiante.telefono);
-                setEmail(estudiante.email);
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/caso2/vehiculo/ver/${id}`);
+                const vehiculo = response.data;
+                setMarca(vehiculo.marca);
+                setModelo(vehiculo.modelo);
+                setAnioFabricacion(vehiculo.anio_fabricacion);
+                setPlaca(vehiculo.placa);
+                setColor(vehiculo.color);
+                setTipoVehiculo(vehiculo.tipo_vehiculo);
+                setKilometraje(vehiculo.kilometraje);
+                setDescripcion(vehiculo.descripcion);
             } catch (error) {
                 console.error('Error al obtener el vehículo', error);
             }
         };
 
-        fetchEstudiante();
+        fetchVehiculo();
     }, [id]);
 
-    const actualizarEstudiante = async (e) => {
+    const actualizarVehiculo = async (e) => {
         e.preventDefault();
         try {
-            const estudianteActualizado = { nombre, apellido, cedula, fecha_nacimiento: fechaNacimiento, ciudad, direccion, telefono, email };
-            await axios.put(`${import.meta.env.VITE_BACKEND_URL}/caso1/estudiante/actualizar/${id}`, estudianteActualizado);
+            const vehiculoActualizado = { marca, modelo, anio_fabricacion: anioFabricacion, placa, color, tipo_vehiculo: tipoVehiculo, kilometraje, descripcion };
+            await axios.put(`${import.meta.env.VITE_BACKEND_URL}/caso2/vehiculo/actualizar/${id}`, vehiculoActualizado);
             Swal.fire({
                 icon: 'success',
                 title: 'Actualización exitosa',
@@ -64,83 +64,83 @@ const EditarVehiculo = () => {
     };
 
     return (
-        <div className="contenedor-estudiantes">
+        <div className="contenedor-vehiculo">
             <button className="btn-regresar" onClick={handleBack}>
                 <FiArrowLeft className="icono-flecha" />
                 Regresar
             </button>
             <h2 className="titulo">Editar Vehículo</h2>
-            <form onSubmit={actualizarEstudiante} className="formulario">
+            <form onSubmit={actualizarVehiculo} className="formulario">
                 <div className="campo-group">
-                    <label className="label">Nombre</label>
+                    <label className="label">Marca</label>
                     <input
                         type="text"
                         className="input"
-                        value={nombre}
-                        onChange={(e) => setNombre(e.target.value)}
+                        value={marca}
+                        onChange={(e) => setMarca(e.target.value)}
                     />
                 </div>
                 <div className="campo-group">
-                    <label className="label">Apellido</label>
+                    <label className="label">Modelo</label>
                     <input
                         type="text"
                         className="input"
-                        value={apellido}
-                        onChange={(e) => setApellido(e.target.value)}
+                        value={modelo}
+                        onChange={(e) => setModelo(e.target.value)}
                     />
                 </div>
                 <div className="campo-group">
-                    <label className="label">Cédula</label>
+                    <label className="label">Año de Fabricación</label>
+                    <input
+                        type="number"
+                        className="input"
+                        value={anioFabricacion}
+                        onChange={(e) => setAnioFabricacion(e.target.value)}
+                    />
+                </div>
+                <div className="campo-group">
+                    <label className="label">Placa</label>
                     <input
                         type="text"
                         className="input"
-                        value={cedula}
-                        onChange={(e) => setCedula(e.target.value)}
+                        value={placa}
+                        onChange={(e) => setPlaca(e.target.value)}
                     />
                 </div>
                 <div className="campo-group">
-                    <label className="label">Fecha de Nacimiento</label>
-                    <input
-                        type="date"
-                        className="input"
-                        value={fechaNacimiento}
-                        onChange={(e) => setFechaNacimiento(e.target.value)}
-                    />
-                </div>
-                <div className="campo-group">
-                    <label className="label">Ciudad</label>
+                    <label className="label">Color</label>
                     <input
                         type="text"
                         className="input"
-                        value={ciudad}
-                        onChange={(e) => setCiudad(e.target.value)}
+                        value={color}
+                        onChange={(e) => setColor(e.target.value)}
                     />
                 </div>
                 <div className="campo-group">
-                    <label className="label">Dirección</label>
+                    <label className="label">Tipo de Vehículo</label>
                     <input
                         type="text"
                         className="input"
-                        value={direccion}
-                        onChange={(e) => setDireccion(e.target.value)}
+                        value={tipoVehiculo}
+                        onChange={(e) => setTipoVehiculo(e.target.value)}
                     />
                 </div>
                 <div className="campo-group">
-                    <label className="label">Teléfono</label>
+                    <label className="label">Kilometraje</label>
                     <input
                         type="text"
                         className="input"
-                        value={telefono}
-                        onChange={(e) => setTelefono(e.target.value)}
+                        value={kilometraje}
+                        onChange={(e) => setKilometraje(e.target.value)}
                     />
                 </div>
                 <div className="campo-group">
-                    <label className="label">Email</label>
+                    <label className="label">Descripción</label>
                     <input
-                        type="email"
+                        type="text"
                         className="input"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        value={descripcion}
+                        onChange={(e) => setDescripcion(e.target.value)}
                     />
                 </div>
                 <div className="botones">
