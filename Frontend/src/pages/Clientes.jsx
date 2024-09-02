@@ -2,42 +2,50 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2'; // Importar SweetAlert2
-import '../styles/Materias.css';
+import '../styles/Clientes.css';
 
 const Clientes = () => {
   const [nombre, setNombre] = useState('');
-  const [codigo, setCodigo] = useState('');
-  const [descripcion, setDescripcion] = useState('');
-  const [creditos, setCreditos] = useState('');
+  const [apellido, setApellido] = useState('');
+  const [cedula, setCedula] = useState('');
+  const [fechaNacimiento, setFechaNacimiento] = useState('');
+  const [ciudad, setCiudad] = useState('');
+  const [direccion, setDireccion] = useState('');
+  const [telefono, setTelefono] = useState('');
+  const [email, setEmail] = useState('');
   const navigate = useNavigate();
 
-  const crearMateria = async (e) => {
+  const crearCliente = async (e) => {
     e.preventDefault();
     try {
-      const nuevaMateria = { nombre, codigo, descripcion, creditos };
-      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/caso1/materias/crear`, nuevaMateria);
+      const nuevoCliente = { nombre, apellido, cedula, fecha_nacimiento: fechaNacimiento, ciudad, direccion, telefono, email };
+      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/caso2/cliente/crear`, nuevoCliente);
       Swal.fire('Éxito', 'Cliente registrado con éxito', 'success');
       limpiarFormulario();
     } catch (error) {
-      Swal.fire('Error', 'Error al registrar al cliente', 'error');
+      Swal.fire('Error', error.response?.data?.msg || 'Error al registrar al cliente', 'error');
     }
   };
 
   const limpiarFormulario = () => {
     setNombre('');
-    setCodigo('');
-    setDescripcion('');
-    setCreditos('');
+    setApellido('');
+    setCedula('');
+    setFechaNacimiento('');
+    setCiudad('');
+    setDireccion('');
+    setTelefono('');
+    setEmail('');
   };
 
-  const handleVerMaterias = () => {
-    navigate('/clientes-registrados'); // Navega a la página de materias registradas
+  const handleVerClientes = () => {
+    navigate('/clientes-registrados'); // Navega a la página de clientes registrados
   };
 
   return (
-    <div className="contenedor-materias">
+    <div className="contenedor-clientes">
       <h2 className="titulo">Registrar Cliente</h2>
-      <form onSubmit={crearMateria} className="formulario">
+      <form onSubmit={crearCliente} className="formulario">
         <div className="campo">
           <label className="label">Nombre</label>
           <input
@@ -48,35 +56,71 @@ const Clientes = () => {
           />
         </div>
         <div className="campo">
-          <label className="label">Código</label>
+          <label className="label">Apellido</label>
           <input
             type="text"
             className="input"
-            value={codigo}
-            onChange={(e) => setCodigo(e.target.value)}
+            value={apellido}
+            onChange={(e) => setApellido(e.target.value)}
           />
         </div>
         <div className="campo">
-          <label className="label">Descripción</label>
+          <label className="label">Cédula</label>
           <input
             type="text"
             className="input"
-            value={descripcion}
-            onChange={(e) => setDescripcion(e.target.value)}
+            value={cedula}
+            onChange={(e) => setCedula(e.target.value)}
           />
         </div>
         <div className="campo">
-          <label className="label">Créditos</label>
+          <label className="label">Fecha de Nacimiento</label>
           <input
-            type="number"
+            type="date"
             className="input"
-            value={creditos}
-            onChange={(e) => setCreditos(e.target.value)}
+            value={fechaNacimiento}
+            onChange={(e) => setFechaNacimiento(e.target.value)}
+          />
+        </div>
+        <div className="campo">
+          <label className="label">Ciudad</label>
+          <input
+            type="text"
+            className="input"
+            value={ciudad}
+            onChange={(e) => setCiudad(e.target.value)}
+          />
+        </div>
+        <div className="campo">
+          <label className="label">Dirección</label>
+          <input
+            type="text"
+            className="input"
+            value={direccion}
+            onChange={(e) => setDireccion(e.target.value)}
+          />
+        </div>
+        <div className="campo">
+          <label className="label">Teléfono</label>
+          <input
+            type="text"
+            className="input"
+            value={telefono}
+            onChange={(e) => setTelefono(e.target.value)}
+          />
+        </div>
+        <div className="campo">
+          <label className="label">Email</label>
+          <input
+            type="email"
+            className="input"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
         <div className="botones">
           <button type="submit" className="boton">Registrar Cliente</button>
-          <button type="button" onClick={handleVerMaterias} className="boton-secundario">Ver Clientes Registrados</button>
+          <button type="button" onClick={handleVerClientes} className="boton-secundario">Ver Clientes Registrados</button>
         </div>
       </form>
     </div>

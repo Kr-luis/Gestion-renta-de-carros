@@ -16,19 +16,19 @@ const Dashboard = () => {
     const [mostrarFormularioMatriculas, setMostrarFormularioMatriculas] = useState(false);
     const navigate = useNavigate();
 
-    // useEffect(() => {
-    //     const idUsuarioLocalStorage = localStorage.getItem('id_usuario');
-    //     const emailLocalStorage = localStorage.getItem('email');
-    //     const nombreLocalStorage = localStorage.getItem('nombre');
+    useEffect(() => {
+        const idUsuarioLocalStorage = localStorage.getItem('id_usuario');
+        const emailLocalStorage = localStorage.getItem('email');
+        const nombreLocalStorage = localStorage.getItem('nombre');
 
-    //     if (!idUsuarioLocalStorage || !emailLocalStorage) {
-    //         navigate('/ingresar');
-    //     } else {
-    //         setIdUsuario(idUsuarioLocalStorage);
-    //         setEmail(emailLocalStorage);
-    //         setNombre(nombreLocalStorage);
-    //     }
-    // }, [navigate]);
+        if (!idUsuarioLocalStorage || !emailLocalStorage) {
+            navigate('/ingresar');
+        } else {
+            setIdUsuario(idUsuarioLocalStorage);
+            setEmail(emailLocalStorage);
+            setNombre(nombreLocalStorage);
+        }
+    }, [navigate]);
 
     const handleLogout = () => {
         localStorage.clear();
